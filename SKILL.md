@@ -1,7 +1,7 @@
 ---
-name: opencreator-skills
+
+## name: opencreator-skills
 description: Build OpenCreator production workflows from scratch or by editing existing graphs. Use when Codex needs to 根据用户内容创作需求在画布中设计 `nodes` 和 `edges`，执行结构反推、Generator 选择与连线、模型选型与参数填写、提示词撰写，或在完成画布设计后继续调用 OpenCreator Workflow API 执行模板搜索、运行、轮询、取结果与交付。
----
 
 # Workflow Builder Skill
 
@@ -10,6 +10,7 @@ description: Build OpenCreator production workflows from scratch or by editing e
 本 Skill 负责在 OpenCreator 画布中，根据用户的内容创作需求，从零搭建一条完整可执行的工作流。
 
 覆盖范围：
+
 - 结构反推
 - Generator 选择与连线
 - 模型选型与参数
@@ -31,15 +32,17 @@ description: Build OpenCreator production workflows from scratch or by editing e
 
 ## 双模式
 
-### Build Mode
-
-当任务重点是“搭画布”或“改图结构”时，进入 Build Mode。
+- 优先走 Operate Mode 模式，如果没有合适的模板或者用户明确要求创建或者编辑工作流 .则进入 Build Mode
 
 ### Operate Mode
 
 当任务重点是“搜索模板、复制模板、运行、轮询、获取结果、取消任务”时，进入 Operate Mode。
 
 如果用户既要搭建又要执行，先走 Build Mode，再走 Operate Mode。
+
+### Build Mode
+
+当任务重点是“搭画布”或“改图结构”时，进入 Build Mode。
 
 ---
 
@@ -52,6 +55,7 @@ description: Build OpenCreator production workflows from scratch or by editing e
 从用户最终产物出发，逐层往前推导出抽象结构和模块依赖关系。
 
 先回答：
+
 - 最终产物是什么
 - 是否有语义层
 - 是否有视觉分支
@@ -60,10 +64,12 @@ description: Build OpenCreator production workflows from scratch or by editing e
 - 所有底层输入是否都能回到用户输入或可生成的基础输入
 
 必读文件：
+
 - `references/step-1-reverse-plan/workflow-reverse-planner.md`
 - `references/step-1-reverse-plan/node-configs.md`
 
 输出要求：
+
 - 宏观 Format
 - Dependency Graph
 
@@ -72,10 +78,12 @@ description: Build OpenCreator production workflows from scratch or by editing e
 将 Step 1 的抽象结构落实为具体的 Generator 模块组合，并规划连线与命名。
 
 必读文件：
+
 - `references/step-1-reverse-plan/generator-wiring-naming-planner.md`
 - `references/step-1-reverse-plan/generator-routing.md`
 
 按需读取：
+
 - 根据选定 Generator，继续读取 `references/step-2-generators/` 下的对应文件
 
 ### Step 3：模型选型与参数
@@ -83,6 +91,7 @@ description: Build OpenCreator production workflows from scratch or by editing e
 为每个执行节点选择模型、填写 `selectedModels` 和参数。
 
 按需读取：
+
 - 根据涉及的节点类型，读取 `references/step-3-models/` 下的对应文件
 
 ### Step 4：撰写提示词
@@ -90,9 +99,11 @@ description: Build OpenCreator production workflows from scratch or by editing e
 为需要 `inputText` 的节点编写提示词。
 
 必读文件：
+
 - `references/step-4-prompts/prompt-prewrite-reasoner.md`
 
 按需读取：
+
 - 根据节点类型，读取对应 prompt 最佳实践文件
 
 ---
@@ -173,6 +184,7 @@ description: Build OpenCreator production workflows from scratch or by editing e
   - `references/step-3-models/input-block-skill.md`
 
 未列出的节点，优先回看：
+
 - `references/step-1-reverse-plan/node-configs.md`
 
 ## Step 4 文件路由表
@@ -232,6 +244,7 @@ N 张图配 N 段文本，第 i 张图对应第 i 段文本，数量必须一致
 - `references/best-practices.md`
 
 执行原则：
+
 - 模板优先搜索，再决定是否从零搭建
 - 运行前必须重新查询参数
 - 不向用户暴露 `node_id` 等技术字段
@@ -249,5 +262,7 @@ N 张图配 N 段文本，第 i 张图对应第 i 段文本，数量必须一致
 如果没有专用工具，就通过 OpenCreator Workflow API 创建或更新工作流。
 
 构造 `nodes` 和 `edges` 时，严格遵守：
+
 - `references/step-1-reverse-plan/node-configs.md`
 - `references/node-catalog.md`
+
