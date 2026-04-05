@@ -1,0 +1,4 @@
+interface:
+  display_name: "内部工作流助手"
+  short_description: "用四步法搭建并运行 OpenCreator 工作流，从画布到结果交付"
+  default_prompt: "Use $opencreator-skills to reverse-plan a workflow, choose generators and models, write prompts, then run and debug the OpenCreator production workflow."
