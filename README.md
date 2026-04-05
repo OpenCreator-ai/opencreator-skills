@@ -1,210 +1,199 @@
+[中文版](./README.zh-CN.md)
+
 # OpenCreator Skills
 
-OpenCreator 工作流技能。通过 OpenCreator 的工作流能力，完成从画布设计到 API 执行的全链路工作。
+Agent skill for operating and building OpenCreator workflows. Covers the full pipeline from template search to result delivery, and from scratch workflow design to canvas execution.
 
-覆盖场景：工作流搭建、工作流编辑、模板搜索、模板复制、工作流运行、运行状态查询、结果获取，以及 UGC 口播广告、多镜头分镜视频、电商多图套图等内容生产场景。
+Supported scenarios: template search, template copy, workflow runs, status polling, result retrieval, workflow building, workflow editing, UGC lipsync ads, multi-shot storyboard videos, ecommerce multi-image sets, and more.
 
-## 基本信息
+## Overview
 
+| Field | Value |
+|---|---|
+| name | `opencreator-skills` |
+| description | Search templates, run workflows, deliver results, or design custom workflows via the OpenCreator API |
+| Product | OpenCreator |
+| Environment | Production `https://api-prod.opencreator.io` |
+| Entry point | [SKILL.md](./SKILL.md) |
 
-| 字段          | 内容                                                                 |
-| ----------- | ------------------------------------------------------------------ |
-| name        | `opencreator-skills`                                               |
-| description | 在 OpenCreator 中完成结构反推、Generator 选择与连线、模型选型、提示词撰写，以及模板搜索、运行、轮询和结果交付 |
-| 适用产品        | OpenCreator                                                        |
-| 适用环境        | 正式环境 `https://api-prod.opencreator.io`                             |
-| 技能入口        | [SKILL.md](./SKILL.md)                                             |
+## Installation
 
+### Via `npx`
 
-## 安装
-
-### 通过 `npx` 安装
-
-如果你希望直接从 GitHub 仓库安装，推荐使用 `skills` CLI：
+Install directly from the GitHub repository using the `skills` CLI:
 
 ```bash
 npx skills add OpenCreator-ai/opencreator-skills
 ```
 
-安装到指定 Agent：
+Install for a specific agent:
 
 ```bash
 npx skills add OpenCreator-ai/opencreator-skills -a codex
 ```
 
-### 通过 OpenClaw / ClawHub 安装
+### Via OpenClaw / ClawHub
 
 ```bash
 openclaw skills install opencreator-skills
 ```
 
-如果使用 `clawhub` CLI，也可以：
+Or with the `clawhub` CLI:
 
 ```bash
 clawhub install opencreator-skills
 ```
 
-## 使用前提
+## Prerequisites
 
-使用这份 skill 时，默认依赖以下前提：
+This skill requires the following environment variables:
 
 ```bash
 export OPENCREATOR_API_KEY="sk_xxx"
 export OPENCREATOR_BASE_URL="https://api-prod.opencreator.io"
 ```
 
-说明：
+- `OPENCREATOR_API_KEY` — Your OpenCreator API key
+- `OPENCREATOR_BASE_URL` — Production endpoint (can also be hardcoded)
 
-- `OPENCREATOR_API_KEY`：OpenCreator API Key
-- `OPENCREATOR_BASE_URL`：默认正式环境地址，不改也可以直接写死为正式环境
+## Usage
 
-## 使用
-
-安装后，在 Codex 中直接描述你的目标即可。
-
-例如：
+After installation, describe your goal in natural language:
 
 ```text
-帮我设计一个电商多图工作流，输入商品图和产品描述，输出 5 张不同用途的商品图。
+Find a UGC video template and run it with this product image and description.
 ```
 
-或：
+Or:
 
 ```text
-帮我找一个 UGC 视频模板，跑一下这个产品图和产品描述。
+Design an ecommerce multi-image workflow: input a product photo and description, output 5 images for different purposes.
 ```
 
-这份 skill 会根据任务类型自动进入不同模式。
+The skill automatically selects the right mode based on the task.
 
-## 核心模式
+## Two Modes
+
+### Operate Mode (default)
+
+Activated when the goal is to run an existing workflow or get quick results from a template. Most user requests follow this path.
+
+Typical flow:
+
+1. Search templates
+2. User selects a template
+3. Copy template
+4. Query runtime parameters
+5. Collect user inputs
+6. Run workflow
+7. Poll status
+8. Deliver results
+
+Key references:
+
+- [references/api-workflows.md](./references/api-workflows.md) — Complete API guide (core)
+- [references/best-practices.md](./references/best-practices.md) — Template-first strategy and design principles
+- [references/operator-playbook.md](./references/operator-playbook.md) — Quick operation checklist
 
 ### Build Mode
 
-当任务目标是“搭建工作流”或“重构工作流结构”时，进入 Build Mode。
+Activated when the goal is to build a workflow graph or restructure an existing one. Only used when no suitable template exists or the user explicitly requests it.
 
-执行顺序固定为四步：
+Fixed four-step sequence:
 
-1. 结构反推
-2. 选择 Generator 并规划连线
-3. 模型选型与参数
-4. 撰写提示词
+1. Structure reverse-planning
+2. Generator selection and wiring
+3. Model selection and parameters
+4. Prompt writing
 
-关键资料：
+Key references:
 
 - [references/step-1-reverse-plan](./references/step-1-reverse-plan)
 - [references/step-2-generators](./references/step-2-generators)
 - [references/step-3-models](./references/step-3-models)
 - [references/step-4-prompts](./references/step-4-prompts)
+- [references/node-catalog.md](./references/node-catalog.md) — Node whitelist, pin rules, default models, JSON templates
 
-### Operate Mode
-
-当任务目标是“运行已有工作流”或“通过模板快速出结果”时，进入 Operate Mode。
-
-典型流程：
-
-1. 搜索模板
-2. 复制模板
-3. 查询运行参数
-4. 补齐用户输入
-5. 运行 workflow
-6. 查询状态
-7. 获取结果并交付
-
-关键资料：
-
-- [references/api-workflows.md](./references/api-workflows.md)
-- [references/operator-playbook.md](./references/operator-playbook.md)
-- [references/best-practices.md](./references/best-practices.md)
-
-## 核心概念
+## Core Concepts
 
 ### Broadcast
 
-1 张 Input Image 对应 N 段文本，生成 N 个结果。  
-常用于分镜生图、分镜生视频。
+1 input image + N text segments = N results. Commonly used for storyboard image/video generation.
 
 ### Alignment
 
-N 张图对应 N 段文本，第 i 张图必须对应第 i 段文本。  
-常用于分镜图和分镜视频一一配对。
+N images + N texts in 1:1 pairing. The i-th image must correspond to the i-th text.
 
-### 列表态传递
+### List Propagation
 
-当 `scriptSplit` 输出文本列表后，下游生成节点按列表自动展开执行，不需要手工复制多个相同节点。
+When `scriptSplit` outputs a text list, downstream generators auto-expand per item — no need to duplicate generator nodes.
 
-### 共享语义层
+### Shared Semantic Layer
 
-在口播广告、多分支内容生成等复杂场景中，优先先生成一个共享结构化 brief，再分给视觉和音频分支，保证信息一致。
+In complex scenarios (lipsync ads, multi-branch content), generate a shared structured brief first, then fork into visual and audio branches to keep information consistent.
 
-## 典型场景
+## Example Scenarios
 
-### 电商多图套图
+### Ecommerce Multi-Image
 
-输入商品图和商品描述，输出 5 到 7 张不同用途的商品图，例如主图、卖点图、场景图、细节图等。
+Input a product photo and description, output 5–7 images for different purposes (hero image, feature highlights, lifestyle shots, detail close-ups, etc.).
 
-参考：
+Reference: [references/scenarios/scenario-ecommerce-multi-image.md](./references/scenarios/scenario-ecommerce-multi-image.md)
 
-- [references/scenarios/scenario-ecommerce-multi-image.md](./references/scenarios/scenario-ecommerce-multi-image.md)
+### Multi-Shot Storyboard Video
 
-### 多镜头分镜视频
+Input reference images, creative copy, or a structured script, output multiple narrative video segments.
 
-输入参考图、创意文案或结构化脚本，输出多段叙事视频。
+Reference: [references/scenarios/scenario-storyboard-video.md](./references/scenarios/scenario-storyboard-video.md)
 
-参考：
+### UGC Lipsync Ad
 
-- [references/scenarios/scenario-storyboard-video.md](./references/scenarios/scenario-storyboard-video.md)
+Input product images, reference video, and product info to generate a ready-to-deploy UGC lipsync ad video.
 
-### UGC 口播广告
+Reference: [references/scenarios/scenario-ugc-lipsync-ad.md](./references/scenarios/scenario-ugc-lipsync-ad.md)
 
-输入产品图、参考视频、产品信息等素材，生成可直接投放的 UGC 口播广告视频。
-
-参考：
-
-- [references/scenarios/scenario-ugc-lipsync-ad.md](./references/scenarios/scenario-ugc-lipsync-ad.md)
-
-## 目录结构
+## Directory Structure
 
 ```text
 opencreator-skills/
-├── SKILL.md
+├── SKILL.md                    # Entry point: mode routing and flow definition
 ├── README.md
+├── README.zh-CN.md
 ├── agents/
 │   └── openai.yaml
 └── references/
-    ├── api-workflows.md
-    ├── best-practices.md
-    ├── node-catalog.md
-    ├── operator-playbook.md
-    ├── scenarios/
-    ├── step-1-reverse-plan/
-    ├── step-2-generators/
-    ├── step-3-models/
-    └── step-4-prompts/
+    ├── api-workflows.md        # Operate Mode core: complete API guide
+    ├── best-practices.md       # Workflow design principles
+    ├── node-catalog.md         # Node whitelist, pin rules, JSON templates (Build Mode core)
+    ├── operator-playbook.md    # Operate quick checklist
+    ├── scenarios/              # End-to-end scenario examples
+    ├── step-1-reverse-plan/    # Build Step 1: structure reverse-planning
+    ├── step-2-generators/      # Build Step 2: generator selection
+    ├── step-3-models/          # Build Step 3: model selection
+    └── step-4-prompts/         # Build Step 4: prompt writing
 ```
 
-## 关键文档
+## Key Documents
 
+| Document | Purpose |
+|---|---|
+| [SKILL.md](./SKILL.md) | Entry point — mode routing and execution flow |
+| [references/api-workflows.md](./references/api-workflows.md) | Operate Mode core: full API pipeline guide |
+| [references/node-catalog.md](./references/node-catalog.md) | Build Mode core: node whitelist, pin rules, default models, JSON templates |
+| [references/best-practices.md](./references/best-practices.md) | Template-first strategy and graph design principles |
+| [references/scenarios](./references/scenarios) | End-to-end examples for common scenarios |
 
-| 文档                                                                   | 作用                            |
-| -------------------------------------------------------------------- | ----------------------------- |
-| [SKILL.md](./SKILL.md)                                               | 主入口，定义触发条件与执行方式               |
-| [references/node-catalog.md](./references/node-catalog.md)           | 节点白名单、Pin 规则、默认模型和关键校验        |
-| [references/api-workflows.md](./references/api-workflows.md)         | OpenCreator Workflow API 调用手册 |
-| [references/operator-playbook.md](./references/operator-playbook.md) | 模板搜索、用户补输入、媒体托管、结果交付、排障方法     |
-| [references/scenarios](./references/scenarios)                       | 高频业务场景的端到端示例                  |
+## Guiding Principles
 
+- Prefer template reuse over building from scratch (Operate Mode first)
+- Always collect real user inputs before running
+- Structure first, then implement
+- Never expose `node_id`, `inputText`, or other technical fields to users — use business language
+- Always re-query parameters before each run; never hardcode input node IDs
+- Deliver images, videos, and audio directly as media — not just raw URLs
 
-## 执行原则
+## Notes
 
-- 先结构，后实现
-- 先真实用户输入，后运行
-- 先模板复用，后从零搭建
-- 不向用户暴露 `node_id`、`inputText` 等技术字段
-- 运行前必须重新查询参数，不硬编码运行输入
-- 图片、视频、音频结果优先直接交付媒体，而不是只贴链接
-
-## 说明
-
-- 这份 skill 以 OpenCreator 正式环境为准
-- 这份 skill 由我们自己维护
-- 既可以通过 GitHub + `npx skills add` 分发，也可以发布到 ClawHub
+- This skill targets the OpenCreator production environment
+- Maintained by the OpenCreator team
+- Distributable via GitHub + `npx skills add` or via ClawHub

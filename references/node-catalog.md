@@ -525,6 +525,97 @@ At minimum:
   - `klingMotionControl`
   - `voiceCloner`
 
+## Node Data Minimum Structure
+
+### Executable Node
+
+```json
+{
+  "label": "Node Name",
+  "description": "Node Description",
+  "themeColor": "#73ADFF",
+  "modelCardColor": "#73ADFF",
+  "selectedModels": ["model-id"],
+  "inputText": "",
+  "imageBase64": "",
+  "inputAudio": "",
+  "inputVideo": "",
+  "status": "idle",
+  "isSelectMode": false,
+  "workflowId": "<当前workflowId>"
+}
+```
+
+### Input Node
+
+```json
+{
+  "label": "Node Name",
+  "description": "Node Description",
+  "themeColor": "#73ADFF",
+  "selectedModels": [],
+  "inputText": "",
+  "imageBase64": "",
+  "inputAudio": "",
+  "inputVideo": "",
+  "status": "idle",
+  "workflowId": "<当前workflowId>"
+}
+```
+
+Do not write derived or front-end-only fields such as `isNodeConnected`, `isTextPinConnected`, `isImagePinConnected`, `estimatedTime`, or `local_file`.
+
+## Node / Edge JSON Templates
+
+### Node
+
+```json
+{
+  "id": "textGenerator-1710000000000-a1b2c3",
+  "type": "textGenerator",
+  "position": { "x": 500, "y": 100 },
+  "selected": false,
+  "data": {
+    "label": "Text Generator",
+    "description": "Generate high-quality text",
+    "themeColor": "#9DFF9E",
+    "modelCardColor": "#9DFF9E",
+    "selectedModels": ["openai/gpt-4o-mini"],
+    "inputText": "",
+    "imageBase64": "",
+    "inputAudio": "",
+    "inputVideo": "",
+    "status": "idle",
+    "isSelectMode": false,
+    "workflowId": "<当前workflowId>",
+    "model_options": { "attachments": [] }
+  }
+}
+```
+
+ID format: `{nodeType}-{timestamp}-{nanoid(6)}`
+
+### Edge
+
+```json
+{
+  "id": "customEdge-textInput-1-imageMaker-1-text-text",
+  "source": "textInput-1",
+  "target": "imageMaker-1",
+  "sourceHandle": "text",
+  "targetHandle": "text",
+  "type": "customEdge"
+}
+```
+
+ID format: `customEdge-{sourceId}-{targetId}-{sourceHandle}-{targetHandle}`
+
+## Layout Hints (DAG)
+
+- `x = 100 + layer * 400`
+- `y = 100 + indexInLayer * 300`
+- `layer` starts at 0 for input nodes and increments rightward
+
 ## Review Checklist
 
 Before trusting a graph, confirm:
