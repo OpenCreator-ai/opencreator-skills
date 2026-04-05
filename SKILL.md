@@ -1,7 +1,11 @@
 ---
-
-## name: opencreator-skills
-description: Build OpenCreator production workflows from scratch or by editing existing graphs. Use when Codex needs to 根据用户内容创作需求在画布中设计 `nodes` 和 `edges`，执行结构反推、Generator 选择与连线、模型选型与参数填写、提示词撰写，或在完成画布设计后继续调用 OpenCreator Workflow API 执行模板搜索、运行、轮询、取结果与交付。
+name: opencreator-skills
+description: >-
+  Build OpenCreator production workflows from scratch or by editing existing
+  graphs. Use when Codex needs to 根据用户内容创作需求在画布中设计 `nodes` 和
+  `edges`，执行结构反推、Generator 选择与连线、模型选型与参数填写、提示词撰写，或在完成画布设计后继续调用
+  OpenCreator Workflow API 执行模板搜索、运行、轮询、取结果与交付。
+---
 
 # Workflow Builder Skill
 
