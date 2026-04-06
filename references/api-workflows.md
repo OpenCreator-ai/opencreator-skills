@@ -97,13 +97,40 @@ curl -s "https://api-prod.opencreator.io/api/developer/v1/templates?keyword=UGC"
 | "I want viral UGC video" | `viral`、`UGC` |
 | "帮我找 AI 生视频的" | `视频` |
 
+### 结果排序与筛选（必做）
+
+API 返回全量匹配结果，你必须在展示前做 client-side 排序，只向用户展示最相关的 **前 5 个**。
+
+排序评分规则（按权重从高到低叠加）：
+
+| 信号 | 判断方式 | 权重 |
+|---|---|---|
+| **输出类型匹配** | 用户要图就优先 output 含 image 的，要视频就优先 video | 最高 |
+| **场景关键词命中** | 模板 `name` 或 `desc` 是否包含用户需求中的核心名词（如"UGC""电商""lipsync"） | 高 |
+| **输入类型匹配** | 用户提供了图片则优先需要 image input 的模板，提供了视频则优先 video input | 中 |
+| **模型质量** | 使用较新或高质量模型的排前面（如 Sora 2 > 旧模型） | 低 |
+
+操作步骤：
+
+1. 将多个关键词的搜索结果合并，按 `template_id` 去重
+2. 对每个模板按上述规则打分排序
+3. 取前 5 个展示给用户；如果总数不足 5 个就全部展示
+4. 如果排序后没有高度匹配的模板，告知用户当前模板库无精确匹配，建议换关键词或进入 Build Mode
+
 ### 向用户展示格式
 
+展示排序后的前 5 个模板，带序号方便用户选择：
+
 ```
-**模板名称**
-功能描述（一句话）
-模型：xxx、xxx
+1. **模板名称**
+   功能描述（一句话）
+   模型：xxx、xxx
+
+2. **模板名称**
+   ...
 ```
+
+如果有效果图（`covers[0]`），优先附上让用户预览。
 
 ---
 
@@ -247,7 +274,20 @@ curl -s -X POST "https://api-prod.opencreator.io/api/developer/v1/workflows/{flo
 
 ---
 
-## 7. 轮询状态
+## 7. 轮询状态（强制闭环，不可中断）
+
+### 🚨 核心义务：运行后必须轮询到终态，然后立刻取结果发给用户
+
+**提交 run 之后，你的唯一下一步就是进入轮询循环。不允许停下来等用户催你。**
+
+轮询闭环协议：
+
+1. 调用 run API 拿到 `task_id` 后，立刻告诉用户：「已提交，任务 ID 为 {task_id}，正在为你跟踪进度…」
+2. 进入轮询循环，每次轮询后向用户报告当前状态
+3. 直到状态变为 `success` / `failed` / `cancelled` 才停止
+4. `success` → **立刻**调 results API，**立刻**把媒体发给用户
+5. `failed` → 读 `error_message` 和 `node_statuses`，告知用户失败原因并建议下一步
+6. **绝对不允许**在 `queued` 或 `running` 状态时停止轮询、等用户来问
 
 ```bash
 curl -s "https://api-prod.opencreator.io/api/developer/v1/workflow-runs/{task_id}" \
@@ -258,16 +298,32 @@ curl -s "https://api-prod.opencreator.io/api/developer/v1/workflow-runs/{task_id
 
 | 状态 | 含义 | 下一步 |
 |---|---|---|
-| `queued` | 排队中 | 继续轮询 |
-| `running` | 运行中 | 继续轮询 |
-| `success` | 成功 | → Step ⑧ |
-| `failed` | 失败 | 查 `error_message` + `node_statuses` |
-| `cancelled` | 已取消 | 结束 |
+| `queued` | 排队中 | 继续轮询，告知用户「排队中，请稍候…」 |
+| `running` | 运行中 | 继续轮询，告知用户「生成中，请稍候…」 |
+| `success` | 成功 | **立刻** → Step ⑧ 取结果并发给用户 |
+| `failed` | 失败 | 查 `error_message` + `node_statuses`，告知用户 |
+| `cancelled` | 已取消 | 告知用户任务已取消 |
 
 ### 轮询频率
 
 - 生文 / 生图 workflow：**每 10 秒**查一次
 - 生视频 / 多节点链路：**每 30 秒**查一次
+
+### 每次轮询时的自我提醒格式
+
+为了防止在长上下文中丢失任务追踪，每次轮询时在内部记录：
+
+```
+[轮询] task_id={task_id} | flow_id={flow_id} | 当前状态={status} | 已轮询={N}次
+```
+
+### 轮询超时处理
+
+| 场景 | 判断条件 | 动作 |
+|---|---|---|
+| queued 卡死 | 连续轮询超过 5 分钟仍为 `queued` | 检查 `input_overrides` 是否有双重嵌套；如有，修正 inputs 重跑 |
+| running 超长 | 生图超过 5 分钟 / 生视频超过 15 分钟仍为 `running` | 告知用户当前仍在运行，继续等待；超过 30 分钟建议取消重试 |
+| 反复失败 | 连续 2 次 run 都 `failed` | 停止重试，展示错误信息，建议用户换模板或调整输入 |
 
 ### queued 卡死诊断
 

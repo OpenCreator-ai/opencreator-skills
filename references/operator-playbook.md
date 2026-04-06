@@ -5,7 +5,9 @@ This is a compact checklist for Operate Mode. Full details are in `references/ap
 ## Before Running
 
 - [ ] Searched templates with 1–3 keywords extracted from user request
-- [ ] Presented candidates in business language (name + description + models)
+- [ ] Merged and deduplicated results across keywords
+- [ ] Ranked results by relevance (output type match > keyword match > input type match > model quality)
+- [ ] Presented **top 5** candidates in business language with numbered list
 - [ ] User selected a template
 - [ ] Copied template via `/workflows/from-template` → got `flow_id`
 - [ ] Queried `/workflows/{flow_id}/parameters` for real `node_id` list
@@ -19,10 +21,13 @@ This is a compact checklist for Operate Mode. Full details are in `references/ap
 - [ ] Local files uploaded to tmpfiles.org (video+image) or catbox.moe (image only)
 - [ ] tmpfiles URL converted to `/dl/` direct link
 
-## After Running
+## After Running (强制闭环 — 不可中断)
 
+- [ ] Immediately entered polling loop after run — did NOT stop to wait for user
 - [ ] Polling at correct interval (10 s text/image, 30 s video)
-- [ ] Only called `/results` after `status === "success"`
+- [ ] Reported status to user on each poll ("排队中…" / "生成中…")
+- [ ] Continued polling until terminal state (success / failed / cancelled)
+- [ ] On success: **immediately** called `/results` and delivered media to user
 - [ ] Delivered media directly (not just raw links)
 - [ ] Included download link alongside embedded media
 

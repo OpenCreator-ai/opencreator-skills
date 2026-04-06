@@ -65,8 +65,11 @@ Supplementary (read only when you need deeper tactics):
 - Always query parameters before each run (node IDs can change)
 - `inputs` must be flat: `{ "node_id": "value" }` — never wrap in extra object
 - Never expose `node_id` / `inputText` / `imageBase64` to users — use business language
-- Deliver media directly, not just URLs
+- **Search results must be ranked by relevance and only show top 5 to the user**
+- **After starting a run, you MUST poll until terminal state (success/failed/cancelled) — never stop and wait for the user to ask. This is your #1 obligation.**
+- **On success, immediately fetch results and deliver media to the user — do not end your turn without delivering.**
 - Poll every 10 s for text/image, 30 s for video
+- Deliver media directly, not just URLs
 
 ---
 
