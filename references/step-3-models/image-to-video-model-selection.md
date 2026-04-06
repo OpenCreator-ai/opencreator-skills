@@ -33,6 +33,50 @@ Image to Video 用于将**静态图片转化为动态视频**。
 
 ---
 
+## Confirmed model IDs
+
+只使用下面这些已确认归属于 `videoMaker` 的模型 ID。
+
+| 展示名 | 精确 model id |
+|---|---|
+| Sora 2 | `fal-ai/sora-2/image-to-video` |
+| Sora 2 Pro | `fal-ai/sora-2/image-to-video/pro` |
+| Veo 3.1 Fast | `veo-3.1-fast-generate-preview/i2v` |
+| Veo 3.1 | `veo-3.1-generate-preview/i2v` |
+| Veo 3 Fast | `fal-ai/veo3/fast/image-to-video` |
+| Veo 3 | `fal-ai/veo3/image-to-video` |
+| Veo 2 | `fal-ai/veo2/image-to-video` |
+| Kling 3.0 Standard | `fal-ai/kling-video/v3/standard/image-to-video` |
+| Kling 3.0 Pro | `fal-ai/kling-video/v3/pro/image-to-video` |
+| Kling o3 Standard | `fal-ai/kling-video/o3/standard/image-to-video` |
+| Kling o3 Pro | `fal-ai/kling-video/o3/pro/image-to-video` |
+| Kling 2.6 Pro | `fal-ai/kling-video/v2.6/pro/image-to-video` |
+| Kling 2.5 Pro | `fal-ai/kling-video/v2.5-turbo/pro/image-to-video` |
+| Kling 2.1 Pro | `fal-ai/kling-video/v2.1/standard/image-to-video` |
+| Kling 1.6 | `fal-ai/kling-video/v1.6/pro/image-to-video` |
+| Seedance 2.0 | `doubao-seedance-2-0-260128/i2v` |
+| Seedance 2.0 Fast | `doubao-seedance-2-0-fast-260128/i2v` |
+| Seedance 1.5 Pro | `fal-ai/bytedance/seedance/v1.5/pro/image-to-video` |
+| Seedance 1.0 Pro | `doubao-seedance-1-0-pro` |
+| Seedance 1.0 Lite | `fal-ai/bytedance/seedance/v1/lite/image-to-video` |
+| Hailuo Video 2.3 Pro | `fal-ai/minimax/hailuo-2.3/pro/image-to-video` |
+| Hailuo Video 02 | `fal-ai/minimax/hailuo-02/standard/image-to-video` |
+| Wan 2.6 | `fal-ai/wan/v2.6/image-to-video` |
+| Wan 2.5 | `fal-ai/wan-25-preview/image-to-video` |
+| Wan 2.2 | `fal-ai/wan/v2.2-a14b/image-to-video` |
+| Vidu Q3 | `fal-ai/vidu/q3/image-to-video` |
+| Runway Gen-4 | `gen4_turbo` |
+| Luma Ray 2 | `ray-2` |
+| Grok Imagine Video | `xai/grok-imagine-video/image-to-video` |
+
+硬规则：
+
+- `videoMaker` 只能使用上表里明确映射到 `videoMaker` 的 id
+- 不要把 text-to-video、video-to-video、motion-control 的 id 误填到 `videoMaker`
+- 像 `Sora 2`、`Kling 3.0`、`Seedance 2.0` 这类推荐名必须先落到精确 id，再写入 `selectedModels`
+
+---
+
 ## 模型选型
 
 ### Sora 2

@@ -112,6 +112,15 @@ Then read the matching file in `references/step-2-generators/` (see routing tabl
 
 Choose models, fill `selectedModels` and parameters for each node.
 
+Hard rule before choosing any model:
+
+- Treat the `Confirmed model IDs` tables in each Step 3 file as the source of truth for model IDs
+- Only use model IDs that are explicitly mapped to the current node type / atom
+- If a model is recommended in prose but its exact ID is not listed for that atom, do not use it
+- Never translate a marketing name (for example `Sora 2`, `GPT Image 1.5`, `Seedream 5.0 Lite`) into a guessed model ID
+- If an atom has no dedicated Step 3 file, use `references/node-catalog.md` as the fallback source of truth
+- If an atom still has no stable model-selection entry after checking those docs, keep the documented fixed behavior and do not invent `selectedModels`
+
 Read the matching file in `references/step-3-models/` (see routing table below).
 
 ### Step 4: Prompt Writing
@@ -163,6 +172,7 @@ Then read the matching prompt best-practices file (see routing table below).
 
 ## Step 3 Model Routing Table
 
+- Source of truth for exact IDs: the `Confirmed model IDs` table in each file below, with `references/node-catalog.md` as fallback for nodes without a dedicated Step 3 file
 - `textGenerator` / `scriptSplit`: `references/step-3-models/text-generator-model-selection.md`
 - `imageMaker`: `references/step-3-models/text-to-image-model-selection.md`
 - `imageToImage`: `references/step-3-models/image-to-image-model-selection.md`

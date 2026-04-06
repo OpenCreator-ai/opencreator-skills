@@ -27,6 +27,37 @@ Image to Image 用于基于已有图片进行视觉变换。
 
 ---
 
+## Confirmed model IDs
+
+只使用下面这些已确认归属于 `imageToImage` 的模型 ID。
+
+| 展示名 | 精确 model id |
+|---|---|
+| Banana Pro | `gemini-3-pro-image-preview` |
+| Banana Pro VIP | `gemini-3-pro-image-preview-vip` |
+| Nano Banana | `fal-ai/nano-banana/edit` |
+| Nano Banana 2 | `fal-ai/gemini-3.1-flash-image-preview/edit` |
+| Nano Banana 2 VIP | `fal-ai/gemini-3.1-flash-image-preview-vip/edit` |
+| GPT Image 1.5 | `fal-ai/gpt-image-1.5/edit` |
+| GPT Image 1 | `openai/gpt-image-1` |
+| Flux Kontext | `fal-ai/flux-pro/kontext/multi` |
+| Flux 2 Pro | `fal-ai/flux-2-pro/edit` |
+| Gemini 2.0 Flash | `fal-ai/gemini-flash-edit/multi` |
+| Qwen Image Edit | `fal-ai/qwen-image-edit-plus` |
+| Seedream 5.0 | `fal-ai/bytedance/seedream/v5/edit` |
+| Seedream 5.0 Lite | `fal-ai/bytedance/seedream/v5/lite/edit` |
+| Seedream 4.5 | `fal-ai/bytedance/seedream/v4.5/edit` |
+| Seedream 4.0 | `fal-ai/bytedance/seedream/v4/edit` |
+| Grok Imagine | `xai/grok-imagine-image/edit` |
+
+硬规则：
+
+- `imageToImage` 只能从上表选择 model id
+- 不要把 text-to-image 的 id 误填到 `imageToImage`
+- 不要把展示名、品牌名或版本名当作 `selectedModels` 的值
+
+---
+
 ## Model selection and parameters
 
 ---

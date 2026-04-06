@@ -31,6 +31,39 @@ Text to Video 用于将自然语言描述生成视频内容。
 
 ---
 
+## Confirmed model IDs
+
+只使用下面这些已确认归属于 `textToVideo` 的模型 ID。
+
+| 展示名 | 精确 model id |
+|---|---|
+| Sora 2 | `fal-ai/sora-2/text-to-video` |
+| Sora 2 Pro | `fal-ai/sora-2/text-to-video/pro` |
+| Veo 3.1 Fast | `veo-3.1-fast-generate-preview` |
+| Veo 3.1 | `veo-3.1-generate-preview` |
+| Veo 3 Fast | `fal-ai/veo3/fast` |
+| Veo 3 | `fal-ai/veo3` |
+| Kling o3 Pro | `fal-ai/kling-video/o3/pro/text-to-video` |
+| Kling 3.0 Pro | `fal-ai/kling-video/v3/pro/text-to-video` |
+| Kling 3.0 Standard | `fal-ai/kling-video/v3/standard/text-to-video` |
+| Kling 2.6 Pro | `fal-ai/kling-video/v2.6/pro/text-to-video` |
+| Seedance 2.0 | `doubao-seedance-2-0-260128` |
+| Seedance 2.0 Fast | `doubao-seedance-2-0-fast-260128` |
+| Seedance 1.5 Pro | `fal-ai/bytedance/seedance/v1.5/pro/text-to-video` |
+| Seedance 1.0 Lite | `fal-ai/bytedance/seedance/v1/lite/text-to-video` |
+| Wan 2.6 | `wan/v2.6/text-to-video` |
+| Vidu Q3 | `fal-ai/vidu/q3/text-to-video` |
+| Hailuo Video 02 | `fal-ai/minimax/hailuo-02/standard/text-to-video` |
+| Grok Imagine Video | `xai/grok-imagine-video/text-to-video` |
+
+硬规则：
+
+- `textToVideo` 只能使用上表里明确映射到 `textToVideo` 的 id
+- 不要把 image-to-video 的 `/image-to-video` 或 `/i2v` id 填到 `textToVideo`
+- 推荐名不是配置值，`selectedModels` 必须写精确 id
+
+---
+
 ## 模型选型
 
 本模块支持多种视频生成模型，不同模型在场景表现、参数能力和稳定性上存在差异。

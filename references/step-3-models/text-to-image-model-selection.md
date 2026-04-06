@@ -25,6 +25,38 @@ Text-to-Image 用于将自然语言描述转化为图像。
 
 ---
 
+## Confirmed model IDs
+
+只使用下面这些已确认归属于 `imageMaker` 的模型 ID。
+
+| 展示名 | 精确 model id |
+|---|---|
+| Banana Pro | `gemini-3-pro-image-preview` |
+| Banana Pro VIP | `gemini-3-pro-image-preview-vip` |
+| Nano Banana | `fal-ai/nano-banana` |
+| Nano Banana 2 | `fal-ai/gemini-3.1-flash-image-preview` |
+| Nano Banana 2 VIP | `fal-ai/gemini-3.1-flash-image-preview-vip` |
+| Imagen 4 | `fal-ai/imagen4/preview` |
+| GPT Image 1.5 | `fal-ai/gpt-image-1.5` |
+| GPT Image 1 | `openai/gpt-image-1` |
+| Grok Imagine | `xai/grok-imagine-image` |
+| Flux 2 Pro | `fal-ai/flux-2-pro` |
+| Flux 1.1 Pro | `fal-ai/flux-pro/v1.1` |
+| Seedream 5.0 | `fal-ai/bytedance/seedream/v5/text-to-image` |
+| Seedream 5.0 Lite | `fal-ai/bytedance/seedream/v5/lite/text-to-image` |
+| Seedream 4.5 | `fal-ai/bytedance/seedream/v4.5/text-to-image` |
+| Seedream 4.0 | `fal-ai/bytedance/seedream/v4/text-to-image` |
+| Hailuo Image 01 | `minimax/hailuo-image-01` |
+| SDXL Fast | `fal-ai/fast-sdxl` |
+
+硬规则：
+
+- `selectedModels` 里必须填精确 model id，不能填展示名
+- 不要把 `Banana Pro`、`Seedream 5.0 Lite`、`GPT Image 1.5` 这类名字直接写进 `selectedModels`
+- 文档里推荐某类模型时，也只能从上表选择对应 id
+
+---
+
 ## Available models and parameters
 
 ### Banana Pro 

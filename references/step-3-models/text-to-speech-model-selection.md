@@ -38,6 +38,25 @@ Text to Speech 用于将文本转换为语音音频。
 
 ---
 
+## Confirmed model IDs
+
+只使用下面这些已确认归属于 `textToSpeech` 的模型 ID。
+
+| 展示名 | 精确 model id |
+|---|---|
+| Fish Audio | `fish-audio/speech-1.6` |
+| ElevenLabs v2 | `fal-ai/elevenlabs/tts/multilingual-v2` |
+| MiniMax Speech 2.8 HD | `fal-ai/minimax/speech-2.8-hd` |
+| MiniMax Speech 2.8 Turbo | `fal-ai/minimax/speech-2.8-turbo` |
+
+硬规则：
+
+- `selectedModels` 只能填上表中的精确 id
+- `voice_effect` 负责选音色，不要把音色名误写成 model id
+- 没有映射到 `textToSpeech` 的 TTS 模型不要自行猜测接入
+
+---
+
 ## 模型选型
 
 ### 1. Fish Audio

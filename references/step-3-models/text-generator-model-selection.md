@@ -36,6 +36,32 @@ It supports **multimodal context inputs** and outputs **text only**.
 
 ---
 
+## Confirmed model IDs
+
+Use only the following exact IDs for `textGenerator`. These IDs are confirmed for this atom.
+
+| Display Name | Exact model ID |
+|---|---|
+| Gemini 3.1 Pro | `google/gemini-3.1-pro-preview` |
+| Gemini 3.1 Flash Lite | `google/gemini-3.1-flash-lite-preview` |
+| Gemini 3 Flash | `google/gemini-3-flash-preview` |
+| Gemini 2.0 Flash | `google/gemini-2.0-flash` |
+| GPT 5.2 Pro | `openai/gpt-5.2-pro` |
+| GPT 5.2 | `openai/gpt-5.2` |
+| GPT 5 | `openai/gpt-5` |
+| GPT 4o | `openai/gpt-4o-2024-11-20` |
+| GPT 4o Mini | `openai/gpt-4o-mini` |
+
+`scriptSplit` shares the same text-model bucket in practice. Prefer `openai/gpt-5.2` when no stronger instruction is available, and never invent a separate `scriptSplit`-only model ID.
+
+Hard rule:
+
+- Use exact IDs from the table above
+- Do not shorten, rename, or upgrade them on your own
+- If a prose recommendation is not in the table, do not use it for `selectedModels`
+
+---
+
 ## Model Comparison
 
 ### Gemini 3.1 Pro

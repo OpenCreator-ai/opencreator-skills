@@ -207,6 +207,15 @@ If a pin is not listed here, no hard cap is currently documented.
 - Use documented defaults for `model_options` or `modelConfigs` when they exist
 - For list-style patterns, preserve the actual graph semantics through wiring rather than inventing special list node types
 
+## Model ID Safety Rules
+
+- The `Confirmed model IDs` section inside each Step 3 file is the source of truth for exact model IDs
+- Only place a model ID in `selectedModels` if that exact ID is mapped to the current node type / atom
+- Never infer or synthesize a model ID from a display name such as `Sora 2`, `Kling 3.0`, `GPT Image 1.5`, or `Seedream 5.0 Lite`
+- If a node is fixed-mode or fixed-provider in the docs below, follow that documented behavior instead of inventing alternate `selectedModels`
+- If a node has no dedicated Step 3 file, use the node-specific rules in this file as the fallback source of truth
+- If a node still has no confirmed model-selection entry after checking those docs, prefer the documented default in this file; if there is no confirmed default, stop and ask rather than guessing
+
 ## Important Node Rules
 
 ### Input Nodes
@@ -348,9 +357,13 @@ If a pin is not listed here, no hard cap is currently documented.
 }
 ```
 
+- Confirmed fixed modes:
+  - `Change BG` -> `Fal ICLight V2`
+  - `Remove BG` -> `Fal Bria Background Remove`
 - Rule:
   - If `model_mode` is `Change BG`, `inputText` must be non-empty
   - If `model_mode` is `Remove BG`, `inputText` may be omitted
+  - Do not invent alternate model IDs for this node
 
 #### `relight`
 
@@ -360,6 +373,8 @@ If a pin is not listed here, no hard cap is currently documented.
   - `image`
 - Default model:
   - `gemini-3-pro-image-preview`
+- Confirmed model IDs:
+  - `gemini-3-pro-image-preview`
 
 #### `imageAngleControl`
 
@@ -368,6 +383,8 @@ If a pin is not listed here, no hard cap is currently documented.
 - Output:
   - `image`
 - Default model:
+  - `fal-ai/qwen-image-edit-2511-multiple-angles`
+- Confirmed model IDs:
   - `fal-ai/qwen-image-edit-2511-multiple-angles`
 - Validation:
   - `selectedModels.length > 0`
@@ -411,6 +428,9 @@ If a pin is not listed here, no hard cap is currently documented.
   - `video`
 - Default model:
   - `doubao-seedance-2-0-260128/i2v`
+- Confirmed model IDs:
+  - `doubao-seedance-2-0-260128/i2v`
+  - `doubao-seedance-2-0-fast-260128/i2v`
 - Validation:
   - `selectedModels.length > 0`
   - Text must be satisfied by `inputText` or an upstream text input
@@ -426,6 +446,9 @@ If a pin is not listed here, no hard cap is currently documented.
   - `video`
 - Default model:
   - `fal-ai/kling-video/o3/standard/video-to-video`
+- Confirmed model IDs:
+  - `fal-ai/kling-video/o1/video-to-video`
+  - `fal-ai/kling-video/o3/standard/video-to-video`
 
 #### `videoLipSync`
 
@@ -436,6 +459,9 @@ If a pin is not listed here, no hard cap is currently documented.
   - `video`
 - Default model:
   - `fal-ai/pixverse/lipsync`
+- Confirmed model IDs:
+  - `fal-ai/pixverse/lipsync`
+  - `fal-ai/sync-lipsync/v2`
 
 #### `klingMotionControl`
 
@@ -447,6 +473,9 @@ If a pin is not listed here, no hard cap is currently documented.
   - `video`
 - Default model:
   - `fal-ai/kling-video/v2.6/standard/motion-control`
+- Confirmed model IDs:
+  - `fal-ai/kling-video/v2.6/standard/motion-control`
+  - `fal-ai/kling-video/v2.6/pro/motion-control`
 - Special rule:
   - If `character_orientation` is `image`, upstream video duration must be <= `10000` ms
   - Otherwise upstream video duration must be <= `30000` ms
@@ -463,6 +492,8 @@ If a pin is not listed here, no hard cap is currently documented.
   - `video`
 - Default model:
   - `fal-ai/infinitalk`
+- Confirmed model IDs:
+  - `fal-ai/infinitalk`
 - Rule:
   - If `inputText` already has content, the text pin requirement is considered satisfied
 
@@ -476,6 +507,11 @@ If a pin is not listed here, no hard cap is currently documented.
   - `audio`
 - Default model:
   - `fish-audio/speech-1.6`
+- Confirmed model IDs:
+  - `fish-audio/speech-1.6`
+  - `fal-ai/elevenlabs/tts/multilingual-v2`
+  - `fal-ai/minimax/speech-2.8-hd`
+  - `fal-ai/minimax/speech-2.8-turbo`
 - Additional requirement:
   - A voice must also be selected through model config or selected voices
 
@@ -495,6 +531,9 @@ If a pin is not listed here, no hard cap is currently documented.
 }
 ```
 
+- Model rule:
+  - No stable `selectedModels` entry is currently documented for this node; do not invent a model ID for this node
+
 #### `voiceCloner`
 
 - Input:
@@ -504,6 +543,9 @@ If a pin is not listed here, no hard cap is currently documented.
   - `audio`
 - Default model:
   - `fal-ai/qwen-3-tts/clone-voice/1.7b`
+- Confirmed model IDs:
+  - `fal-ai/qwen-3-tts/clone-voice/1.7b`
+  - `fal-ai/minimax/voice-clone`
 - Validation:
   - `selectedModels.length > 0`
 
